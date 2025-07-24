@@ -2,7 +2,7 @@ import SwiftUI
 
 struct ContentView: View {
     
-    @EnvironmentObject var tabManager: TabManager
+    @EnvironmentObject var AppState: AppState
 
     
     
@@ -11,34 +11,45 @@ struct ContentView: View {
             
            // Header()
             
-            switch tabManager.selectedTab {
-                
-                
-                case .settings:
-                SettingsView()
-                
-                case .roster:
-                DriverListView()
-                
-                case .races:
-                Text("Races")
-                
-                case .stats:
-                Text("Stats")
-                
             
+            if AppState.isLoggedIn {
+                switch AppState.selectedTab {
+                    case .settings: SettingsView()
+                    case .roster: DriverListView()
+                    case .races: Text("Races")
+                    case .stats: Text("Stats")
+                }
+                Navbar()
+            } else {
+                StartView()
+            }
+            
+            if AppState.SequenceBeforeDriver{
+                SequenceBeforeDriver()
             }
             
             
-            Navbar()
+
+            
+            
+            
+            
+            
         }
+        .onAppear {
+            if AppState.loadToken() != nil {
+                AppState.isLoggedIn = true
+            }
+
+            }
+        }
+
     }
-}
+
 
 #Preview {
     ContentView()
-        .environmentObject(TabManager())
-        .environmentObject(LanguageManager())
+        .environmentObject(AppState())
 
 }
 

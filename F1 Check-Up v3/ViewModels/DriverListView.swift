@@ -575,6 +575,6 @@ struct DriverDetailView: View {
 
 #Preview {
     ContentView()
-        .environmentObject(TabManager())
-        .environmentObject(LanguageManager())
+        .environmentObject(AppState())
+        
 }

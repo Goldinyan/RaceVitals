@@ -5,9 +5,30 @@
 import SwiftUI
 
 struct SettingsView: View {
-    @EnvironmentObject var LanguageManager: LanguageManager
+    @EnvironmentObject var AppState: AppState
     @AppStorage("NotificationEnabled") private var Notification = false
     @AppStorage("DarkModeEnabled") private var DarkMode = false
+    @State var ShowAdminPanel: Bool = false
+    
+    
+    
+    
+    
+    
+    
+   
+
+    
+    func admin() {
+        print("Admin Approved")
+    }
+    func logOut() {
+        AppState.userEmail = nil
+        AppState.errorMessage = nil
+        AppState.isLoggedIn = false
+        UserDefaults.standard.removeObject(forKey: "authToken") // falls du einen Token speicherst
+        AppState.isLoggedIn = false
+    }
 
     var body: some View {
         NavigationStack {
@@ -27,7 +48,21 @@ struct SettingsView: View {
             }
             .frame(maxWidth: .infinity, maxHeight: 80)
             .background(Color.red)
-            
+            HStack{
+                Spacer()
+                VStack{
+                    Text(AppState.username ?? "")
+                        .font(.system(size: 30, weight: .bold, design: .serif))
+                        .foregroundColor(.white)
+                        .frame(maxWidth: .infinity)                        .padding(.vertical, 5)
+                         
+                }
+                .background(Color( hex : "1F2937"))
+                .cornerRadius(10)
+                .padding(.top, 30)
+                .padding(.horizontal, 40)
+
+            }
             HStack {
                 Text("Settings")
                     .font(.system(size: 26, weight: .bold, design: .serif))
@@ -105,14 +140,14 @@ struct SettingsView: View {
                     Menu {
                         ForEach(Language.allCases, id: \.self) { language in
                             Button(action: {
-                                LanguageManager.selectedLanguage = language
+                                AppState.selectedLanguage = language
                             }) {
                                 Text(language.rawValue)
                                     .foregroundColor(.white)
                             }
                         }
                     } label: {
-                        Text("\(LanguageManager.selectedLanguage.rawValue)  >")
+                        Text("\(AppState.selectedLanguage.rawValue)")
                             .foregroundColor(.white)
                             .font(.system(size: 16, weight: .bold, design: .serif))
                     }
@@ -218,18 +253,24 @@ struct SettingsView: View {
                 .padding()
                 }
                 
-                HStack {
-                    Image(systemName: "rectangle.portrait.and.arrow.right")
-                        .font(.system(size: 22))
-                        .foregroundColor(.red)
-                    Text("Sign Out")
-                        .font(.system(size: 22, weight: .regular, design: .serif))
-                        .foregroundColor(.red)
-                        .padding(.leading, 10)
-                    Spacer()
-                    
+                
+                Button {
+                    AppState.deleteToken()
+                    AppState.isLoggedIn = false
+                } label: {
+                    HStack {
+                        Image(systemName: "rectangle.portrait.and.arrow.right")
+                            .font(.system(size: 22))
+                            .foregroundColor(.red)
+                        Text("Sign Out")
+                            .font(.system(size: 22, weight: .regular, design: .serif))
+                            .foregroundColor(.red)
+                            .padding(.leading, 10)
+                        Spacer()
+                        
+                    }
+                    .padding()
                 }
-                .padding()
                 
                 
             }
@@ -247,7 +288,13 @@ struct SettingsView: View {
                 Spacer()
             }
             .padding(.top, 10)
-            .padding(.bottom, 180)
+            .padding(.bottom, 20)
+            
+            
+           
+            }
+            
+         
         }
         .background(Color(hex: "#111827"))
     }
@@ -318,7 +365,7 @@ struct AboutView: View {
         .background(Color( hex: "#111827").edgesIgnoringSafeArea(.all))
     }
     }
-}
+
 
 
     
@@ -327,8 +374,7 @@ struct AboutView: View {
     
     #Preview {
         ContentView()
-            .environmentObject(TabManager())
-            .environmentObject(LanguageManager())
+            .environmentObject(AppState())
 
         
     }

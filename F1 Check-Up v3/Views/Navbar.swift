@@ -2,7 +2,7 @@ import SwiftUI
 
 struct Navbar: View {
     
-    @EnvironmentObject var tabManager: TabManager
+    @EnvironmentObject var TabManager: AppState
 
     var body: some View {
         VStack(spacing: 0) {
@@ -43,18 +43,18 @@ struct Navbar: View {
             .font(.system(size: 25))
 
             .frame(width: 30, height: 30)
-            .foregroundColor(tabManager.selectedTab == tab ? .red : .gray)
+            .foregroundColor(TabManager.selectedTab == tab ? .red : .gray)
             .onTapGesture {
-                tabManager.selectedTab = tab
+                TabManager.selectedTab = tab
             }
     }
 
     func tabButton(_ title: String, tab: Tab) -> some View {
         Button(action: {
-            tabManager.selectedTab = tab
+            TabManager.selectedTab = tab
         }) {
             Text(title)
-                .foregroundColor(tabManager.selectedTab == tab ? .red : .gray)
+                .foregroundColor(TabManager.selectedTab == tab ? .red : .gray)
                 .font(.system(size: 16, design: .serif))
         }
     }
@@ -62,7 +62,6 @@ struct Navbar: View {
 
 #Preview {
     ContentView()
-        .environmentObject(TabManager())
-        .environmentObject(LanguageManager())
+        .environmentObject(AppState())
 
 }

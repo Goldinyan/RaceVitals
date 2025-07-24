@@ -39,6 +39,5 @@ struct Header : View {
 
 #Preview {
     ContentView()
-        .environmentObject(TabManager())
-        .environmentObject(LanguageManager())
+        .environmentObject(AppState())
 }

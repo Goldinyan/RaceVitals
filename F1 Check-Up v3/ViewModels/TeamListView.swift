@@ -217,8 +217,7 @@ struct TeamDetailView: View {
 
 #Preview("Standart Preview"){
     ContentView()
-        .environmentObject(TabManager())
-        .environmentObject(LanguageManager())
+        .environmentObject(AppState())
 }
 
 
