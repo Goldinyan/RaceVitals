@@ -185,26 +185,8 @@ struct WelcomeScreen: View {
                 .background(Color.white)
                 .foregroundColor(.black)
                 .cornerRadius(10)
-
-            Text("Continue with")
-                .foregroundColor(.white)
-                .font(.system(size: 16, weight: .light, design: .serif))
-                .padding(.top, 30)
-
-            HStack(spacing: 20) {
-                ForEach(["applelogo", "globe", "f.circle"], id: \.self) { symbol in
-                    Button(action: {}) {
-                        Image(systemName: symbol)
-                            .font(.system(size: 20, weight: .bold, design: .serif))
-                            .padding()
-                            .frame(width: 50, height: 50)
-                            .background(Color.white)
-                            .foregroundColor(.black)
-                            .clipShape(Circle())
-                            .disabled(true)
-                    }
-                }
-            }
+            Spacer()
+                .frame(height: UIScreen.main.bounds.height * 0.1)
         }
         .padding()
         }
@@ -218,7 +200,6 @@ struct LoginView: View {
     @State private var email = ""
     @State private var password = ""
     @EnvironmentObject var AppState: AppState
-    @State private var errorMessage: String?
     @State private var showAmpel = false
     @State private var ampelPhase = 0
     @State private var welcomeOffset: CGFloat = 0
@@ -230,7 +211,7 @@ struct LoginView: View {
     @Binding var shiftUp: Bool
     @State private var appOpacity: Double = 0.0
     @State private var carDrive : Bool = false
-
+    @State private var dontlogin : Bool = true
     func startAmpelSequence() {
             DispatchQueue.main.asyncAfter(deadline: .now()) {
                 for i in 0..<Ampel {
@@ -246,6 +227,9 @@ struct LoginView: View {
                 }
             }
         }
+    
+    @State private var errorMessage: String?
+    @State private var showerror = false
     
     
     
@@ -322,6 +306,7 @@ struct LoginView: View {
                             .accentColor(.white)
                             .padding(.horizontal, 16)
                             .padding(.vertical, 10)
+                            .autocapitalization(.none)
                         
                         
                     }
@@ -384,42 +369,49 @@ struct LoginView: View {
                         .padding(.trailing, 42)
                         .padding(.top, 10)
                 }
-                
-                Text(errorMessage ?? "")
-                    .foregroundStyle(.white)
-                Button{
-                    AppState.logIn(email: email, password: password)
-
-                    withAnimation(.easeInOut(duration: 2.0)) {
-                        carDrive = true
-                    }
-
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-                        AppState.SequenceBeforeDriver = true
-                    }
-
-                } label: {
-                    Text("Login")
-                        .font(.system(size: 18, weight: .bold, design: .serif))
-                        .foregroundColor(.black)
-                        .frame(maxWidth: .infinity, maxHeight: 40)
-                        .padding()
-                        .background(Color.white)
-                        .cornerRadius(10)
-                        .padding(.horizontal, 60)
-                        .padding(.top, 30)
-                    
+                   if showerror{
+                       Text(AppState.errorMessage ??  "")
+                           .foregroundStyle(.white)
+                           .font(.system(size: 14, weight: .bold, design: .serif))
+                   }
+                   Button {
+                            showerror = true
+                           AppState.logIn(email: email, password: password) { success in
+                               if success {
+                                    AppState.loadUserData ()
+                                    carDrive = true
+                                    AppState.isLoggedIn = false
+                                    print("-------Login-Animation--------")
+                                    print("CarDrive:",carDrive)
+                                    print("IsLoggedIn:",AppState.isLoggedIn)
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 6.0) {
+                                       AppState.SequenceBeforeDriver = true
+                                       AppState.isLoggedIn = false
+                                    }
+                                   print("Login Success")
+                                   print("Sequence:", AppState.SequenceBeforeDriver)
+                                   print("IsLoggedIn 2:",AppState.isLoggedIn)
+                                   print("------------------------------")
+                               }
+                           }
+                       
+                   } label: {
+                       
+                           Text("Login")
+                               .font(.system(size: 18, weight: .bold, design: .serif))
+                               .foregroundColor(.black)
+                               .frame(maxWidth: .infinity, maxHeight: 40)
+                               .padding()
+                               .background(Color.white)
+                               .cornerRadius(10)
+                               .padding(.horizontal, 60)
+                               .padding(.top, 30)
+                       
                 }
+                   
                 
-                if let error = AppState.errorMessage {
-                    Text("❌ Fehler: \(error)")
-                        .foregroundColor(.red)
-                }
                 
-                if let user = AppState.userEmail {
-                    Text("✅ Eingeloggt als: \(user)")
-                        .foregroundColor(.green)
-                }
+                
                 
                 HStack{
                     Spacer()

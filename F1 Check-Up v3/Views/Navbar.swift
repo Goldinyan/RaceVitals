@@ -35,6 +35,9 @@ struct Navbar: View {
             .background(Color.gray)
         }
         .padding(.bottom, -20)
+        .onAppear {
+            TabManager.loadUserData()
+        }
     }
 
     func tabIcon(systemName: String, tab: Tab) -> some View {

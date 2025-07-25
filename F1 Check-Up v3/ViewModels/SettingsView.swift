@@ -125,6 +125,33 @@ struct SettingsView: View {
                 .padding()
                 
                 HStack {
+                    Image(systemName: "paintpalette.fill")
+                        .font(.system(size: 22))
+                        .foregroundColor(.gray)
+                    Text("ColorScheme")
+                        .font(.system(size: 22, weight: .regular, design: .serif))
+                        .foregroundColor(.white)
+                        .padding(.leading, 10)
+                    Spacer()
+                    Button {
+                        AppState.CollerPickerShow = true
+                    } label: {
+                        Image(systemName: "eyedropper.full" )
+                            .font(.system(size: 22))
+                            .foregroundColor(.gray)
+                       
+                    }
+                    .overlay(
+                        Rectangle()
+                            .frame(width: 700, height: 2)
+                            .foregroundStyle(Color(hex: "#374151"))
+                            .offset(y: 30),
+                        alignment: .center
+                    )
+                }
+                .padding()
+                
+                HStack {
                     Image(systemName: "globe")
                         .font(.system(size: 22))
                         .foregroundColor(.gray)
@@ -141,6 +168,7 @@ struct SettingsView: View {
                         ForEach(Language.allCases, id: \.self) { language in
                             Button(action: {
                                 AppState.selectedLanguage = language
+                                AppState.updateLanguage(to: AppState.selectedLanguage)
                             }) {
                                 Text(language.rawValue)
                                     .foregroundColor(.white)
