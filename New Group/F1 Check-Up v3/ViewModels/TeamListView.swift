@@ -6,6 +6,7 @@ struct TeamListView: View {
     let team: Team
     @State private var drivers = allDrivers
     let selectedYear: Int?
+    @EnvironmentObject var AppState: AppState
     
     
     
@@ -25,18 +26,24 @@ struct TeamListView: View {
             
             VStack(alignment: .leading){
                 
-                VStack{
+                VStack(spacing: 0){
                     
-                    HStack{
                         
-                        
+                    ZStack{
                         Image(team.image)
                             .resizable()
                             .aspectRatio(contentMode: .fit)
-                            .frame(width: 350, height: 210)
+                            .frame(width: UIScreen.main.bounds.width * 0.5, height: UIScreen.main.bounds.height * 0.25)
+                            .opacity(0.2)
+                        
+                        
+                        Image(team.currentLivery[0].image)
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: UIScreen.main.bounds.width * 0.8, height: UIScreen.main.bounds.height * 0.35)
+                           
                     }
-                    .padding(8)
-                    .border(Color( hex: "#1F2937"), width: 5)
+                    
                     
                     
                     
@@ -45,7 +52,8 @@ struct TeamListView: View {
 
                         
                         Text(team.name)
-                            .font(.system(size: 30, weight: .bold, design: .serif))
+                            .font(.system(size: 30, weight: .bold))
+                            .font(.custom("Outfit", size: 24))
                             .foregroundStyle(.white)
                             .padding(.leading, 24)
 
@@ -66,7 +74,6 @@ struct TeamListView: View {
                     }
                     .padding(.top, 10)
                     .background(Color( hex: "#1F2937"))
-                    .padding(.top, -8)
                     
                     
                     
@@ -80,7 +87,6 @@ struct TeamListView: View {
                     }
                     .padding(.top, 10)
                     .background(Color( hex: "#1F2937"))
-                    .padding(.top, -8)
                     
                     HStack{
                         Text("Points: ")
@@ -89,7 +95,7 @@ struct TeamListView: View {
                             .bold()
                         
                         Spacer()
-                        Text("\(team.totalPoints)")
+                        Text("\(team.totalPoints(language: AppState.selectedLanguage.rawValue))")
                             .font(.system(size:20, design: .serif))
                             .foregroundStyle(.red)
                             .bold()
@@ -102,7 +108,6 @@ struct TeamListView: View {
                     
                     
                     .background(Color( hex: "#1F2937"))
-                    .padding(.top, -9)
                     
                 }
                 
@@ -113,7 +118,7 @@ struct TeamListView: View {
                 
                 HStack {
                     VStack {
-                        Text("\(team.WinsSeasonTeam(for: selectedYear))")
+                        Text("\(team.WinsSeasonTeam(for: selectedYear, language: AppState.selectedLanguage.rawValue))")
                             .font(.system(size: 20, weight: .bold, design: .serif))
                             .foregroundStyle(Color.white)
                             .padding(.bottom, 0.1)
@@ -124,7 +129,7 @@ struct TeamListView: View {
                     .frame(maxWidth: .infinity)
                     
                     VStack {
-                        Text("\(team.PodiumsSeasonTeam(for: selectedYear))")
+                        Text("\(team.PodiumsSeasonTeam(for: selectedYear, language: AppState.selectedLanguage.rawValue))")
                             .font(.system(size: 20, weight: .bold, design: .serif))
                             .foregroundStyle(Color.white)
                             .padding(.bottom, 0.1)
@@ -135,8 +140,7 @@ struct TeamListView: View {
                     .frame(maxWidth: .infinity)
                     
                     VStack {
-                        Text("\(team.PolesSeasonTeam(for: selectedYear))")
-
+                        Text("\(team.PolesSeasonTeam(for: selectedYear, language: AppState.selectedLanguage.rawValue))")
                             .font(.system(size: 20, weight: .bold, design: .serif))
                             .foregroundStyle(Color.white)
                             .padding(.bottom, 0.1)
@@ -149,7 +153,7 @@ struct TeamListView: View {
                     
                     
                     VStack {
-                        Text("\(team.FastestLapsSeasonTeam(for: selectedYear))")
+                        Text("\(team.FastestLapsSeasonTeam(for: selectedYear, language: AppState.selectedLanguage.rawValue,))")
                             .font(.system(size: 20, weight: .bold, design: .serif))
                             .foregroundStyle(Color.white)
                             .padding(.bottom, 0.1)
@@ -160,7 +164,7 @@ struct TeamListView: View {
                     .frame(maxWidth: .infinity)
                     
                     VStack {
-                        Text("\(team.RacesSeasonTeam(for: selectedYear))")
+                        Text("\(team.RacesSeasonTeam(for: selectedYear, language: AppState.selectedLanguage.rawValue))")
                             .font(.system(size: 20, weight: .bold, design: .serif))
                             .foregroundStyle(Color.white)
                             .padding(.bottom, 0.1)
@@ -203,6 +207,7 @@ struct TeamListView: View {
 
 struct TeamDetailView: View {
     let team: Team
+    @Binding var searchText: String
 
 
     var body: some View {

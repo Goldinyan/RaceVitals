@@ -91,10 +91,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		6DAD1E0C2E15342A0038DCE5 = {
+		6D1EA5222E5C8F9500A736E5 /* New Group */ = {
 			isa = PBXGroup;
 			children = (
 				6DAD1E172E15342A0038DCE5 /* F1 Check-Up v3 */,
+			);
+			path = "New Group";
+			sourceTree = "<group>";
+		};
+		6DAD1E0C2E15342A0038DCE5 = {
+			isa = PBXGroup;
+			children = (
+				6D1EA5222E5C8F9500A736E5 /* New Group */,
 				6DAD1E262E15342B0038DCE5 /* F1 Check-Up v3Tests */,
 				6DAD1E302E15342B0038DCE5 /* F1 Check-Up v3UITests */,
 				6DAD1E162E15342A0038DCE5 /* Products */,
@@ -443,7 +451,7 @@
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 15.5;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.F1-Check-Up";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.F1-Check-Up-v3";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
 				SDKROOT = auto;
@@ -484,7 +492,7 @@
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 15.5;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.F1-Check-Up";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.F1-Check-Up-v3";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
 				SDKROOT = auto;

@@ -1,63 +1,51 @@
 //
-//  SpalshScreen.swift
+//  SplashScreen.swift
 //  F1 Check-Up v3
 //
 //  Created by Ansgar Seifert on 24.07.25.
 //
 
-
 import SwiftUI
 
 struct SplashScreenView: View {
     
-    
     let darkRed = Color(red: 0.5, green: 0.0, blue: 0.0)
     let brightRed = Color(red: 0.8, green: 0.2, blue: 0.2)
+
     @EnvironmentObject var AppState: AppState
     @State private var rotation = 0.0
     @State private var progress = 0.0
-    
-    
-    func progressadder () {
-        progress += Double.random(in: 0...0.005)
-    }
     @State private var animate = false
-    
-    
+
+    func progressadder() {
+        progress = min(progress + Double.random(in: 0...0.01), 1.0)
+    }
     
     var body: some View {
-        
-        
-        ZStack{
-            
-            
-            
-            
-            
-            
+        ZStack {
+            // Hintergrund
             LinearGradient(
                 gradient: Gradient(colors: [darkRed, brightRed]),
                 startPoint: .leading,
                 endPoint: .trailing
             )
             .edgesIgnoringSafeArea(.all)
+            
             Image("carbonImage")
                 .resizable()
                 .frame(width: UIScreen.main.bounds.width)
                 .opacity(0.35)
                 .blendMode(.overlay)
             
-            
             VStack {
-                
                 Spacer()
                     .frame(minHeight: UIScreen.main.bounds.height * 0.2)
                 
-                
-                
+                // Rotierendes Reifen-Image
                 Image("loadingScreenTires")
                     .resizable()
-                    .frame(width: UIScreen.main.bounds.width * 0.4, height: UIScreen.main.bounds.width * 0.4)
+                    .frame(width: UIScreen.main.bounds.width * 0.4,
+                           height: UIScreen.main.bounds.width * 0.4)
                     .rotationEffect(.degrees(rotation))
                     .onAppear {
                         withAnimation(Animation.linear(duration: 2).repeatForever(autoreverses: false)) {
@@ -66,10 +54,8 @@ struct SplashScreenView: View {
                     }
                     .padding(.top, UIScreen.main.bounds.height * 0.2)
                 
-                
-                
-                
-                ProgressView(value: progress)
+                // ProgressBar
+                ProgressView(value: progress, total: 1)
                     .progressViewStyle(LinearProgressViewStyle())
                     .padding(.horizontal, UIScreen.main.bounds.width * 0.2)
                     .onAppear {
@@ -83,38 +69,20 @@ struct SplashScreenView: View {
                     }
                     .padding(.top, UIScreen.main.bounds.height * 0.05)
                 
-                
                 Spacer()
                     .frame(minHeight: UIScreen.main.bounds.height * 0.3)
                 
-                
+                // Footer-Text
                 Text("© 2025 Created by Goldinyan")
                     .font(.footnote)
                     .foregroundColor(.white)
                     .padding(.bottom, UIScreen.main.bounds.height * 0.05)
-                
-                
-                
-                
-                
             }
-            
         }
-        
-        
-        
-        
-        
     }
-    
-    
-    
-    
 }
-
 
 #Preview {
     ContentView()
         .environmentObject(AppState())
-
 }

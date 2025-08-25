@@ -19,12 +19,14 @@ struct ContentView: View {
                     switch AppState.selectedTab {
                     case .settings: SettingsView()
                     case .roster: DriverListView()
-                    case .races: Text("Races")
-                    case .stats: Text("Stats")
+                    case .races: CalenderView()
+                    case .stats: StatsView()
+                    case .house: SeasonViewAll()
+                        
                     }
                     Navbar()
                 } else if  AppState.SequenceBeforeDriver && !AppState.isLoggedIn {
-                    SequenceBeforeDriver()
+                    
                 } else if  !AppState.isLoggedIn  {
                     StartView()
                 }
@@ -40,27 +42,34 @@ struct ContentView: View {
                 
             }
             .zIndex(2)
-            .onAppear {
-                if !didRunInitialCheck {
-                    didRunInitialCheck = true
-                    if AppState.loadToken() != nil {
-                        AppState.isLoggedIn = true
-                        print("Token is here")
-                    } else {
-                        print("Token is not here")
-                    }
-                }
-            }
+            
             
             
             if AppState.ShowSplash {
-                SplashScreenView()
+               SplashScreenView()
                     .transition(.opacity)
                     .zIndex(3)
+                    .onAppear {
+                        AppState.LoadSearcgBarInfos()
+
+                        AppState.loadUserData()
+                        if !didRunInitialCheck {
+                            didRunInitialCheck = true
+                            if AppState.loadToken() != nil {
+                                AppState.isLoggedIn = true
+                                print("Token is here")
+                            } else {
+                                print("Token is not here")
+                            }
+                        }
+                    }
+                    
             }
         }
         .onAppear {
             AppState.ShowSplash = true
+            
+
         }
         }
 

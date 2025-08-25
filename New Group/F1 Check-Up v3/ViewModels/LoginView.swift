@@ -142,15 +142,15 @@ struct WelcomeScreen: View {
         
         VStack(spacing: 15) {
             Text("Welcome")
-                .font(.system(size: 50, weight: .bold, design: .serif))
+                .font(.system(size: 50, weight: .bold, design: .default))
                 .foregroundColor(.white)
                 .padding(.bottom, 20)
 
-            Text("Follow every race, team and driver")
+            Text("Stats, calendars, and race history")
                 .font(.system(size: 20, design: .serif))
                 .foregroundColor(.white.opacity(0.85))
 
-            Text("with live stats and upcoming events.")
+            Text("built for true F1 fans.")
                 .font(.system(size: 20, design: .serif))
                 .foregroundColor(.white.opacity(0.85))
                 .padding(.bottom, 40)
@@ -166,13 +166,19 @@ struct WelcomeScreen: View {
 
                 onLoginTap()
             }
-                .font(.system(size: 18, weight: .bold, design: .serif))
+                .font(.system(size: 18, weight: .bold, design: .default))
                 .padding()
                 .frame(maxWidth: .infinity)
                 .background(
                     RoundedRectangle(cornerRadius: 10)
-                        .fill(Color.red)
-                        .shadow(color: .red.opacity(0.5), radius: 10, x: 0, y: 5)
+                        .fill(
+                            LinearGradient(
+                            gradient: Gradient(colors: [brightRed, darkRed]),
+                            startPoint: .trailing,
+                            endPoint: .leading
+                            )
+                        )
+                        //.shadow(color: .red.opacity(0.5), radius: 10, x: 0, y: 5)
                 )
                 .foregroundColor(.white)
                 .scaleEffect(isPressed ? 1.05 : 1)
@@ -212,21 +218,7 @@ struct LoginView: View {
     @State private var appOpacity: Double = 0.0
     @State private var carDrive : Bool = false
     @State private var dontlogin : Bool = true
-    func startAmpelSequence() {
-            DispatchQueue.main.asyncAfter(deadline: .now()) {
-                for i in 0..<Ampel {
-                    DispatchQueue.main.asyncAfter(deadline: .now() + Double(i) * 0.7 + 2.0) {
-                        currentImageIndex = i
-                        playSound(named: "tick")
-                    }
-                }
-
-                DispatchQueue.main.asyncAfter(deadline: .now() + Double(6) * 0.7 + 2.0) {
-                    currentImageIndex = 6
-                    sequencefinished = true
-                }
-            }
-        }
+   
     
     @State private var errorMessage: String?
     @State private var showerror = false
@@ -243,44 +235,10 @@ struct LoginView: View {
                 endPoint: .trailing
             )
             .ignoresSafeArea()
-            .onAppear {
-                startAmpelSequence()
-            }
+            
             VStack {
                 
-                if carDrive == false {
-                    HStack(spacing: 0) {
-                        ForEach(0..<5, id: \.self) { i in
-                            VStack(spacing: 12) {
-                                // 🔴 Obere Lichter
-                                Circle()
-                                    .fill(currentImageIndex == 6 ? Color.gray :
-                                            i < currentImageIndex ? Color.red : Color.gray)
-                                    .frame(width: 40, height: 40)
-                                
-                                // 🟢 Untere Lichter
-                                Circle()
-                                    .fill(currentImageIndex == 6 ? Color.green : Color.gray)
-                                    .frame(width: 40, height: 40)
-                            }
-                            .padding(8)
-                            .background(Color.black)
-                            .cornerRadius(10)
-                            
-                            if i < 4 {
-                                Rectangle()
-                                    .fill(Color.black)
-                                    .frame(width: 12, height: 5) // sichtbar & lang genug
-                            }
-                        }
-                    }
-                    .padding(.leading, 390)
-                    
-                    .padding()
-                    .position (y: shiftUp ? -270 : 600)
-                    .animation(.easeInOut(duration: 2), value: shiftUp)
-                    
-                }
+             
           
                 
                 
@@ -379,19 +337,13 @@ struct LoginView: View {
                            AppState.logIn(email: email, password: password) { success in
                                if success {
                                     AppState.loadUserData ()
-                                    carDrive = true
-                                    AppState.isLoggedIn = false
-                                    print("-------Login-Animation--------")
-                                    print("CarDrive:",carDrive)
-                                    print("IsLoggedIn:",AppState.isLoggedIn)
-                                    DispatchQueue.main.asyncAfter(deadline: .now() + 6.0) {
-                                       AppState.SequenceBeforeDriver = true
-                                       AppState.isLoggedIn = false
-                                    }
-                                   print("Login Success")
-                                   print("Sequence:", AppState.SequenceBeforeDriver)
-                                   print("IsLoggedIn 2:",AppState.isLoggedIn)
-                                   print("------------------------------")
+                                   
+                                   
+                                   DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+                                       AppState.isLoggedIn = true
+
+                                   }
+                                  
                                }
                            }
                        
