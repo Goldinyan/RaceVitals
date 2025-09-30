@@ -53,7 +53,6 @@ struct TeamListView: View {
                         
                         Text(team.name)
                             .font(.system(size: 30, weight: .bold))
-                            .font(.custom("Outfit", size: 24))
                             .foregroundStyle(.white)
                             .padding(.leading, 24)
 

@@ -7,7 +7,7 @@
     
 
 import Foundation
-import SwiftUICore
+import SwiftUI
 
 //MARK: OKAY I DONT KNOW BRO (RANDOM)                            -> LOL                        -> NEARLY THERE                         -> LECK EIER
 

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+   Info.plist
+   F1 Check-Up v3
+
+   Created by Ansgar Seifert on 26.08.25.
+   Copyright (c) 2025 ___ORGANIZATIONNAME___. All rights reserved.
+-->
+<plist version="1.0">
+<dict>
+    <key>CFBundleIdentifier</key>
+    <string>com.Race-Vitals</string>
+    
+    <key>CFBundleExecutable</key>
+    <string>$(EXECUTABLE_NAME)</string>
+
+    <key>CFBundleName</key>
+    <string>Race-Vitals</string>
+
+    <key>CFBundleDisplayName</key>
+    <string>Race-Vitals</string>
+
+    <key>CFBundleVersion</key>
+    <string>1.0</string>
+
+    <key>CFBundleShortVersionString</key>
+    <string>1.0</string>
+
+    
+    
+    <key>UIAppFonts</key>
+    <array>
+        <string>Poppins-Black.ttf</string>
+        <string>Poppins-Bold.ttf</string>
+        <string>Poppins-ExtraBold.ttf</string>
+        <string>Poppins-ExtraLight.ttf</string>
+        <string>Poppins-Light.ttf</string>
+        <string>Poppins-Medium.ttf</string>
+        <string>Poppins-Regular.ttf</string>
+        <string>Poppins-SemiBold.ttf</string>
+        <string>Poppins-Thin.ttf</string>
+
+
+    </array>
+    
+    
+    <key>UILaunchStoryboardName</key>
+    <string>LaunchScreen</string>
+
+    <key>UIApplicationSceneManifest</key>
+    <dict>
+        <key>UIApplicationSupportsMultipleScenes</key>
+        <true/>
+        <key>UISceneConfigurations</key>
+        <dict>
+            <key>UIWindowSceneSessionRoleApplication</key>
+            <array>
+                <dict>
+                    <key>UISceneConfigurationName</key>
+                    <string>Default Configuration</string>
+                    <key>UISceneDelegateClassName</key>
+                    <string>$(PRODUCT_MODULE_NAME).SceneDelegate</string>
+                </dict>
+            </array>
+        </dict>
+    </dict>
+
+    <key>NSCameraUsageDescription</key>
+    <string>Die Kamera wird für Profilbilder und Dokumente benötigt.</string>
+
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>Der Standort wird verwendet, um relevante Inhalte anzuzeigen.</string>
+</dict>
+</plist>

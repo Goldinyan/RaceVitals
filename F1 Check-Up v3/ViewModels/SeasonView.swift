@@ -306,7 +306,7 @@ struct CircuitsExpandedView: View {
                         Text("DNF")
                             .foregroundStyle(Color.white)
                     } else {
-                        Text("\(RaceStats(driver: driver, topic: "Position"))")
+                        Text(String(describing: RaceStats(driver: driver, topic: "Position")))
                             .foregroundStyle(Color.white)
 
                     }
@@ -322,7 +322,7 @@ struct CircuitsExpandedView: View {
                         .foregroundStyle(Color.white)
 
                     Spacer()
-                    Text("\(RaceStats(driver: driver, topic: "Points"))")
+                    Text(String(describing: RaceStats(driver: driver, topic: "Points")))
                         .foregroundStyle(Color.white)
 
                 }

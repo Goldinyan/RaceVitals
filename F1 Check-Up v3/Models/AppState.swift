@@ -10,11 +10,19 @@ import Foundation
 import FirebaseAuth
 import FirebaseFirestore
 import Security
-import SwiftUICore
 import SwiftUI
 
 class AppState: ObservableObject {
-    @Published var selectedLanguage: Language = .en
+    @Published var selectedLanguage: Language = {
+        if let code = Locale.current.language.languageCode?.identifier,
+           let lang = Language(rawValue: code) {
+            print(lang)
+            return lang
+        } else {
+            return .en
+        }
+    }()
+
     @Published var selectedTab: Tab = .roster
     @Published var PrimaryColor: PrimaryColor = .blue
     @Published var userEmail: String?
@@ -155,7 +163,6 @@ class AppState: ObservableObject {
         
     }
     
-    
     var mergedHistory: Set<String> {
         return DriverHistory.union(TeamHistory).union(RulesHistory).union(SeasonHistory).union(StrategiesHistory).union(CircuitsHistory).union(RecordsHistory).union(TriviaHistory).union(FanVotingHistory).union(TechHistory).union(RadioMomentsHistory)
     }
@@ -163,8 +170,6 @@ class AppState: ObservableObject {
     var mergedFav: Set<String> {
         return DriverFav.union(TeamFav).union(RulesFav).union(SeasonFav).union(StrategiesFav).union(CircuitsFav).union(RecordsFav).union(TriviaFav).union(FanVotingFav).union(TechFav).union(RadioMomentsFav)
     }
-    
-    
 
     func TeamColors(team: String) -> String {
         switch team {
@@ -357,6 +362,7 @@ class AppState: ObservableObject {
         saveSearchBarInfos()
         LoadSearcgBarInfos()
     }
+    
     func addHistory(value: String, topic: String) {
         switch topic {
         case "Driver":
@@ -387,7 +393,6 @@ class AppState: ObservableObject {
         saveSearchBarInfos()
         LoadSearcgBarInfos()
     }
-
 
     func removeHistory(value: String, topic: String) {
         switch topic {
@@ -452,11 +457,12 @@ class AppState: ObservableObject {
             saveSearchBarInfos()
             LoadSearcgBarInfos()
         }
+    
     func TextChanger(OptionEn: String, OptionGe: String, OptionSp: String, OptionFr: String) -> String {
         switch selectedLanguage {
         case .en:
             return OptionEn
-        case .ge:
+        case .de:
             return OptionGe
         case .sp:
             return OptionSp
@@ -552,14 +558,6 @@ class AppState: ObservableObject {
         }
     }
     
-    
-    
-    
-    
-    
-    
-    
-    
     func loadUserData() {
         guard let user = Auth.auth().currentUser else {
                 print("Kein eingeloggter Nutzer.")
@@ -583,6 +581,50 @@ class AppState: ObservableObject {
             }
         }
     }
+    
+    
+    func fetchAllUsers() {
+        let db = Firestore.firestore()
+        
+        db.collection("users").getDocuments { snapshot, error in
+            if let error = error {
+                print("Fehler beim Abrufen der Nutzer: \(error.localizedDescription)")
+                return
+            }
+            
+            guard let documents = snapshot?.documents else {
+                print("Keine Dokumente gefunden.")
+                return
+            }
+            
+            for doc in documents {
+                let data = doc.data()
+                let username = data["Username"] as? String ?? "Unbekannt"
+                let email = data["Email"] as? String ?? "Keine E-Mail"
+                print("👤 \(username) – \(email)")
+            }
+        }
+    }
+
+    
+    func checkIfUsernameExists(_ name: String, completion: @escaping (Bool) -> Void) {
+        let db = Firestore.firestore()
+        
+        db.collection("users")
+            .whereField("Username", isEqualTo: name)
+            .getDocuments { snapshot, error in
+                if let error = error {
+                    print("Fehler bei Username-Check: \(error.localizedDescription)")
+                    completion(false)
+                    return
+                }
+                
+                let exists = snapshot?.documents.count ?? 0 > 0
+                completion(exists)
+            }
+    }
+
+    
     
    
     
@@ -626,6 +668,13 @@ class AppState: ObservableObject {
             kSecAttrAccount as String: "authToken"
         ]
         SecItemDelete(query as CFDictionary)
+        
+        if let code = Locale.current.language.languageCode?.identifier,
+           let lang = Language(rawValue: code) {
+            selectedLanguage = lang
+        } else {
+            selectedLanguage = .en
+        }
     }
     
     
@@ -637,10 +686,13 @@ class AppState: ObservableObject {
                     switch errCode {
                     case .userNotFound:
                         self.errorMessage = "Kein Account mit dieser E-Mail gefunden."
+                        print("Kein Account mit dieser E-Mail gefunden.")
                     case .wrongPassword:
                         self.errorMessage = "Falsches Passwort."
+                        print("Falsches Passwort.")
                     case .invalidEmail:
                         self.errorMessage = "Ungültige E-Mail-Adresse."
+                        print("Ungültige E-Mail-Adresse.")
                     default:
                         self.errorMessage = error.localizedDescription
                     }
@@ -727,7 +779,7 @@ class AppState: ObservableObject {
 
     
     enum Language: String, CaseIterable {
-        case en, ge, sp, fr
+        case en, de, sp, fr
     }
     
     enum Tab {
