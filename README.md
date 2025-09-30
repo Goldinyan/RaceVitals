@@ -2,7 +2,7 @@
 
 # 🏎️ RaceVitals
 
-**RaceVitals** is a modern iOS app for motorsport enthusiasts, offering real-time insights into driver performance, race schedules, and live statistics — all in a sleek, intuitive interface.
+**RaceVitals** is a modern iOS app for motorsport enthusiasts, offering deep insights into past races, driver performance, and team statistics. Rather than live data, RaceVitals focuses on historical session analysis — delivering structured, high-resolution information across seasons, circuits, and competitors. With a sleek and intuitive interface, it’s built for fans who want to explore the sport beyond the surface and understand the numbers behind the action.
 
 ## Features
 
